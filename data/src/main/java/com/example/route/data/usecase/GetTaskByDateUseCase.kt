@@ -9,6 +9,6 @@ class GetTaskByDateUseCase @Inject constructor(
     private val repository: TaskRepo
 ) {
     suspend operator fun invoke(date: Long): Flow<List<TaskDto>> {
-        return repository.getTaskById(date)
+        return repository.getTaskByDate(date)
     }
 }
