@@ -1,6 +1,10 @@
 [versions]
 agp = "8.5.0"
 kotlin = "1.9.0"
+kotlinxCoroutines = "1.8.1"
+kotlinPlugin = "1.8.10"
+hiltAndroid = "2.51.1"
+roomVersion = "2.6.1"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -15,6 +19,12 @@ navigationFragmentKtx = "2.7.7"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationFragmentKtx" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid"}
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+room-runtime = {module="androidx.room:room-runtime",version.ref ="roomVersion"}
+room-compiler = {module="androidx.room:room-compiler",version.ref="roomVersion"}
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -27,4 +37,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlinPlugin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize",  version.ref = "kotlinPlugin"}
+android-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
 
