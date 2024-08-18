@@ -43,6 +43,8 @@
             android:layout_margin="32dp"
             android:backgroundTint="@color/blue"
             android:src="@drawable/ic_add"
+            style="@style/fab_style"
+            android:tintMode="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
