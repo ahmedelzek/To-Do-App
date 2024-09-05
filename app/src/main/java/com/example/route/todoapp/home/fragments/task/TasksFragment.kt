@@ -5,16 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
-import com.example.route.todoapp.R
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import com.example.route.data.database.model.TaskDto
 import com.example.route.todoapp.databinding.FragmentTasksBinding
 import com.example.route.todoapp.home.fragments.add_task.AddTaskFragment
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-class TasksFragment : Fragment() {
+@AndroidEntryPoint
+class TasksFragment : Fragment(), TaskAdapter.OnDeleteClickListener , TaskAdapter.OnDoneClickListener {
 
     private var _binding: FragmentTasksBinding? = null
     private val binding get() = _binding!!
+
+    private var adapterTask = TaskAdapter(listOf())
+    private val viewModel: TasksViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,31 +35,42 @@ class TasksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.recyclerViewTasks.adapter = adapterTask
         binding.fab.setOnClickListener {
             showAddTaskFragment()
         }
         showTaps()
+        adapterTask.setOnDeleteClickListener(this)
+        adapterTask.setOnDoneClickListener(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadAllTasks()  // Load all tasks on resume
+        observeTasks()
+    }
+
+    private fun observeTasks() {
+        lifecycleScope.launch {
+            viewModel.tasks.collect { tasks ->
+                adapterTask.updateTasksList(tasks)
+            }
+        }
     }
 
     private fun showAddTaskFragment() {
         val bottomSheetFragment = AddTaskFragment {
-            // Handle the action when "Add" is clicked in the bottom sheet
+            viewModel.loadAllTasks()
         }
         bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
     }
-    private fun showTaps() {
 
+    private fun showTaps() {
         val tab = binding.tabLayout.newTab()
         tab.text = "All"
         tab.tag = "All"
-        val tab2 = binding.tabLayout.newTab()
-        tab2.text = "None"
-        tab2.tag = "None"
         binding.tabLayout.addTab(tab)
-        binding.tabLayout.addTab(tab2)
         binding.tabLayout.getTabAt(0)?.select()
-
-
         tabMargin()
     }
 
@@ -67,5 +87,22 @@ class TasksFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDeleteClick(task: TaskDto) {
+        lifecycleScope.launch {
+            viewModel.deleteTask(task)
+            Toast.makeText(requireContext(), "Task Deleted", Toast.LENGTH_LONG).show()
+        }
+        viewModel.loadAllTasks()
+    }
+
+    override fun onDoneClick(task: TaskDto) {
+        lifecycleScope.launch {
+            viewModel.updateTask(task)
+            task.isDone = !task.isDone!!
+        }
+        viewModel.loadAllTasks()
+        Toast.makeText(requireContext(), "Task Done", Toast.LENGTH_LONG).show()
     }
 }

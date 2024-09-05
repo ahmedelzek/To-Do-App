@@ -30,4 +30,8 @@ class TaskRepoImpl @Inject constructor(
     override suspend fun deleteTask(task: TaskDto) {
         taskDao.delete(task)
     }
+
+    override suspend fun updateTask(task: TaskDto) {
+        taskDao.update(task)
+    }
 }

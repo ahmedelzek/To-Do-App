@@ -9,4 +9,5 @@ interface TaskRepo {
     suspend fun getTaskByDate(date: Long): Flow<List<TaskDto>>
     suspend fun insertTask(task: TaskDto)
     suspend fun deleteTask(task: TaskDto)
+    suspend fun updateTask(task: TaskDto)
 }

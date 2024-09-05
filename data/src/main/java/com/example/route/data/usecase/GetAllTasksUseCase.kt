@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetAllTasksUseCase @Inject constructor(
     private val repository: TaskRepo
 ) {
-    suspend operator fun invoke(): Flow<List<TaskDto>> {
+    suspend fun invoke(): Flow<List<TaskDto>> {
         return repository.getAllTasks()
     }
 }
