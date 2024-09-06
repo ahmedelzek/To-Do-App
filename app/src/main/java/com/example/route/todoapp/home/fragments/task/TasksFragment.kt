@@ -42,6 +42,7 @@ class TasksFragment : Fragment(), TaskAdapter.OnDeleteClickListener , TaskAdapte
         showTaps()
         adapterTask.setOnDeleteClickListener(this)
         adapterTask.setOnDoneClickListener(this)
+        viewModel.loadAllTasks()
     }
 
     override fun onResume() {
@@ -92,7 +93,7 @@ class TasksFragment : Fragment(), TaskAdapter.OnDeleteClickListener , TaskAdapte
     override fun onDeleteClick(task: TaskDto) {
         lifecycleScope.launch {
             viewModel.deleteTask(task)
-            Toast.makeText(requireContext(), "Task Deleted", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Task ${task.taskTitle} Deleted", Toast.LENGTH_LONG).show()
         }
         viewModel.loadAllTasks()
     }
@@ -103,6 +104,7 @@ class TasksFragment : Fragment(), TaskAdapter.OnDeleteClickListener , TaskAdapte
             task.isDone = !task.isDone!!
         }
         viewModel.loadAllTasks()
-        Toast.makeText(requireContext(), "Task Done", Toast.LENGTH_LONG).show()
+        if (task.isDone == false)
+            Toast.makeText(requireContext(), "Task ${task.taskTitle} Done", Toast.LENGTH_LONG).show()
     }
 }

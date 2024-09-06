@@ -42,7 +42,7 @@ class AddTaskFragment(private val onAddClick: () -> Unit) : BottomSheetDialogFra
         val date = currentDate
         val dateAsString = currentDate.toString()
         val isDone = false
-        return TaskDto(taskTitle = task, dateAsString = dateAsString, date = date?.toEpochDay(), isDone = isDone)
+        return TaskDto(taskTitle = task, taskCategory = "", dateAsString = dateAsString, date = date?.toEpochDay(), isDone = isDone)
     }
 
 }

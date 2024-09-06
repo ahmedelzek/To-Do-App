@@ -1,5 +1,6 @@
 package com.example.route.data.repo
 
+import com.example.route.data.contarct.CategoryRepo
 import com.example.route.data.contarct.TaskRepo
 import dagger.Binds
 import dagger.Module
@@ -14,5 +15,10 @@ abstract class RepositoryModule {
     abstract fun bindTaskRepo(
         categoriesRepoImpl: TaskRepoImpl
     ): TaskRepo
+
+    @Binds
+    abstract fun bindCategoryRepo(
+        categoriesRepoImpl: CategoryRepoImpl
+    ): CategoryRepo
 
 }

@@ -12,6 +12,8 @@ data class TaskDto(
     @ColumnInfo
     var taskTitle: String?,
     @ColumnInfo
+    var taskCategory: String?,
+    @ColumnInfo
     var dateAsString: String?,
     @ColumnInfo
     var date: Long?,

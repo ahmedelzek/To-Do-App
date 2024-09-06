@@ -2,6 +2,7 @@ package com.example.route.data.database
 
 import android.content.Context
 import androidx.room.Room
+import com.example.route.data.database.dao.CategoryDao
 import com.example.route.data.database.dao.TaskDao
 import dagger.Module
 import dagger.Provides
@@ -27,5 +28,9 @@ object DatabaseModule {
     @Provides
     fun provideTaskDao(database: TaskDatabase): TaskDao {
         return database.taskDao()
+    }
+    @Provides
+    fun provideCategoryDao(database: TaskDatabase): CategoryDao {
+        return database.categoryDao()
     }
 }
