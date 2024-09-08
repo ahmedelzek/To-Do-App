@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.route.data.database.model.TaskDto
 import com.example.route.todoapp.databinding.FragmentTasksBinding
+import com.example.route.todoapp.home.fragments.add_category.AddCategoryFragment
 import com.example.route.todoapp.home.fragments.add_task.AddTaskFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -39,6 +40,9 @@ class TasksFragment : Fragment(), TaskAdapter.OnDeleteClickListener , TaskAdapte
         binding.fab.setOnClickListener {
             showAddTaskFragment()
         }
+        binding.addCategory.setOnClickListener {
+            showAddCategoryFragment()
+        }
         showTaps()
         adapterTask.setOnDeleteClickListener(this)
         adapterTask.setOnDoneClickListener(this)
@@ -63,6 +67,11 @@ class TasksFragment : Fragment(), TaskAdapter.OnDeleteClickListener , TaskAdapte
         val bottomSheetFragment = AddTaskFragment {
             viewModel.loadAllTasks()
         }
+        bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+    }
+
+    private fun showAddCategoryFragment() {
+        val bottomSheetFragment = AddCategoryFragment()
         bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
     }
 

@@ -13,16 +13,29 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="15dp"
             android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tabBackground="@drawable/tab_background"
             app:tabMode="scrollable"
             app:tabPadding="8dp"
             app:tabSelectedTextColor="@color/white"
             app:tabTextColor="@color/blue" />
+
+        <ImageView
+            android:id="@+id/addCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:paddingHorizontal="7dp"
+            android:background="@drawable/selected_tab_background"
+            android:src="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="@id/tabLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tabLayout" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -37,12 +50,12 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
+            style="@style/fab_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="32dp"
             android:backgroundTint="@color/blue"
             android:src="@drawable/ic_add"
-            style="@style/fab_style"
             android:tintMode="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
