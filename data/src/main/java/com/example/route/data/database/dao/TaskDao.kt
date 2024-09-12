@@ -23,4 +23,7 @@ interface TaskDao {
 
     @Query("SELECT * FROM TaskDto WHERE date = :date")
     fun getTasksByDate(date: Long): List<TaskDto>
+
+    @Query("SELECT * FROM TaskDto WHERE taskCategory = :category")
+    fun getTasksByCategory(category: String): List<TaskDto>
 }

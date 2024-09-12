@@ -8,6 +8,7 @@ import com.example.route.data.usecase.DeleteCategoryUseCase
 import com.example.route.data.usecase.DeleteTaskUseCase
 import com.example.route.data.usecase.GetAllCategoriesUseCase
 import com.example.route.data.usecase.GetAllTasksUseCase
+import com.example.route.data.usecase.GetTasksByCategoryUseCas
 import com.example.route.data.usecase.UpdateTaskUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +24,8 @@ class TasksViewModel @Inject constructor(
     private val deleteTaskUseCase: DeleteTaskUseCase,
     private val updateTaskUseCase: UpdateTaskUseCase,
     private val getCategoriesUseCase: GetAllCategoriesUseCase,
-    private val deleteCategoryUseCase: DeleteCategoryUseCase
+    private val deleteCategoryUseCase: DeleteCategoryUseCase,
+    private val getTasksByCategoryUseCas: GetTasksByCategoryUseCas
 ) : ViewModel() {
 
     private val _tasks = MutableStateFlow<List<TaskDto>>(emptyList())
@@ -47,6 +49,14 @@ class TasksViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             getCategoriesUseCase.invoke().collect { categories ->
                 _categories.value = categories
+            }
+        }
+    }
+
+    fun getTasksByCategory(category: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            getTasksByCategoryUseCas.invoke(category).collect { tasks ->
+                _tasks.value = tasks
             }
         }
     }

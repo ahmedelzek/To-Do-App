@@ -16,12 +16,14 @@ import com.example.route.data.database.model.TaskDto
 import com.example.route.todoapp.databinding.FragmentTasksBinding
 import com.example.route.todoapp.home.fragments.add_category.AddCategoryFragment
 import com.example.route.todoapp.home.fragments.add_task.AddTaskFragment
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TasksFragment : Fragment(), TaskAdapter.OnDeleteClickListener,
-    TaskAdapter.OnDoneClickListener {
+    TaskAdapter.OnDoneClickListener, OnTabSelectedListener {
 
     private var _binding: FragmentTasksBinding? = null
     private val binding get() = _binding!!
@@ -46,10 +48,9 @@ class TasksFragment : Fragment(), TaskAdapter.OnDeleteClickListener,
         binding.addCategory.setOnClickListener {
             showAddCategoryFragment()
         }
+        binding.tabLayout.addOnTabSelectedListener(this)
         adapterTask.setOnDeleteClickListener(this)
         adapterTask.setOnDoneClickListener(this)
-        viewModel.loadAllTasks()
-        viewModel.getCategories()
         observeTasks()
         observeCategories()
     }
@@ -73,7 +74,7 @@ class TasksFragment : Fragment(), TaskAdapter.OnDeleteClickListener,
     private fun observeCategories() {
         lifecycleScope.launch {
             viewModel.categories.collect { categories ->
-                setupTabs(categories)  // Dynamically set up tabs based on the categories
+                setupTabs(categories)
             }
         }
     }
@@ -81,6 +82,7 @@ class TasksFragment : Fragment(), TaskAdapter.OnDeleteClickListener,
     private fun showAddTaskFragment() {
         val bottomSheetFragment = AddTaskFragment {
             viewModel.loadAllTasks()
+            observeTasks()
         }
         bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
     }
@@ -89,6 +91,7 @@ class TasksFragment : Fragment(), TaskAdapter.OnDeleteClickListener,
         val bottomSheetFragment = AddCategoryFragment {
             lifecycleScope.launch {
                 viewModel.getCategories()
+                observeCategories()
             }
         }
         bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
@@ -105,6 +108,7 @@ class TasksFragment : Fragment(), TaskAdapter.OnDeleteClickListener,
                 text = category.categoryName
             }
             binding.tabLayout.addTab(tab)
+            tab.tag = category
 
             binding.tabLayout.getTabAt(binding.tabLayout.tabCount - 1)?.view?.setOnLongClickListener {
                 showDeleteCategoryConfirmationDialog(category)
@@ -165,8 +169,33 @@ class TasksFragment : Fragment(), TaskAdapter.OnDeleteClickListener,
             task.isDone = !task.isDone!!
         }
         viewModel.loadAllTasks()
-        if (task.isDone == false)
-            Toast.makeText(requireContext(), "Task ${task.taskTitle} Done", Toast.LENGTH_LONG)
+        if (task.isDone == true)
+            Toast.makeText(requireContext(), "Task ${task.taskTitle} Done", Toast.LENGTH_SHORT)
                 .show()
+    }
+
+    override fun onTabSelected(tab: TabLayout.Tab?) {
+
+            if (tab?.position == 0) {
+                viewModel.loadAllTasks()
+            } else {
+                val category = tab?.tag as CategoryDto?
+                category?.categoryName?.let {
+                    viewModel.getTasksByCategory(it)
+                }
+            }
+    }
+    override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+    override fun onTabReselected(tab: TabLayout.Tab?) {
+
+        if (tab?.position == 0) {
+            viewModel.loadAllTasks()
+        } else {
+            val category = tab?.tag as CategoryDto?
+            category?.categoryName?.let {
+                viewModel.getTasksByCategory(it)
+            }
+        }
     }
 }

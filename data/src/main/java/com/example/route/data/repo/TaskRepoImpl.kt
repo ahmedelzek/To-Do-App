@@ -34,4 +34,10 @@ class TaskRepoImpl @Inject constructor(
     override suspend fun updateTask(task: TaskDto) {
         taskDao.update(task)
     }
+
+    override suspend fun getTasksByCategory(category: String): Flow<List<TaskDto>> {
+        return flow {
+            emit(taskDao.getTasksByCategory(category))
+        }
+    }
 }

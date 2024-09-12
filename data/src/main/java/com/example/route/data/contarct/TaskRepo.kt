@@ -10,4 +10,5 @@ interface TaskRepo {
     suspend fun insertTask(task: TaskDto)
     suspend fun deleteTask(task: TaskDto)
     suspend fun updateTask(task: TaskDto)
+    suspend fun getTasksByCategory(category: String): Flow<List<TaskDto>>
 }

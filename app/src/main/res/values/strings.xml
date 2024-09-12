@@ -12,4 +12,5 @@
     <string name="add_new_task">Add New Task</string>
     <string name="save">Save</string>
     <string name="add_new_category">Add New Category</string>
+    <string name="no_category">No Category</string>
 </resources>
